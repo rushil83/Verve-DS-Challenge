@@ -59,5 +59,3 @@ This repository contains a bash script to set up a Python environment with all t
   - `scikit-learn`
   - `jupyter`
 - Ensure you have sufficient permissions to execute the script and install packages.
-
-Enjoy working with your Jupyter Notebook!
