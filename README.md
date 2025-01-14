@@ -252,32 +252,33 @@ This matches the table value of **$600**, which is the maximum revenue achieved 
 
 ### 3. Knowing Both Maximum Spend and Maximum Auction Volume at Each Bid Price
 
-- In this scenario, we assume that both **maximum spend** and **maximum auction volume** are known at each bid price.  
-- This allows us to **cap the winnable events** at each bid price based on the lower of the two constraints:  
-  - **Auction Volume Constraint**: `win_events(bid_price) = total_auction(bid_price) * win_rate(bid_price)`  
-  - **Spend Constraint**: `win_events(bid_price) = Spend(bid_price) / bid_price`
+#### Assumption:
+- **Max Auction Volume** for each bid price is based on past data, i.e., the `auction_events` column represents the maximum auction volume at that bid price.
+- **Spend Cap** is **\$500** for all bid prices.
 
 #### Winnable Events Formula:
-
-**winnable_events(bid_price) = min(total_auction(bid_price) * win_rate(bid_price), Spend(bid_price) / bid_price)**
+The winnable events at each bid price are capped by the lower of:
+- **Auction Volume Constraint**:  
+  `win_events(bid_price) = auction_events(bid_price) * win_rate(bid_price)`
+- **Spend Constraint**:  
+  `win_events(bid_price) = Spend(bid_price) / bid_price`
 
 #### Revenue Formula:
-
 **revenue(bid_price) = winnable_events(bid_price) * (advertiser_price - bid_price)**
 
-Assume for $0.1 bidprice **max_auction_volume = 10,000 and spend_cap is 500$**
+---
 
-For **\$0.1**, we calculate the winnable events as:
+#### Table of Calculations:
 
-1. **Auction Volume Constraint**:  
-   `win_events(0.1) = total_auction(10,000) * win_rate(0.3) = 3,000`
-
-2. **Spend Constraint**:  
-   `win_events(0.1) = Spend(500) / bid_price(0.1) = 5,000`
-
-The minimum of the two is **3,000**. Using the revenue formula:
-
-**revenue(0.1) = winnable_events(3,000) * (advertiser_price(0.5) - bid_price(0.1))**  
-**revenue(0.1) = 3,000 * (0.5 - 0.1) = 3,000 * 0.4 = \$1,200**
-
-
+| #   | Bid Price | Auction Events (Max Auction Volume) | Win Rate | Profit Margin (`advertiser_price - bid_price`) | Auction Volume Constraint (`auction_events * win_rate`) | Spend Constraint (`500 / bid_price`) | Winnable Events (min of both) | Revenue (`winnable_events * profit_margin`) |
+|-----|-----------|-------------------------------------|----------|-----------------------------------------------|----------------------------------------|--------------------------------|-------------------------------|--------------------------------------------|
+| 0   | 0.01      | 100,000                             | 0.0      | 0.49                                          | 0                                      | 50,000                         | 0                             | 0                                          |
+| 1   | 0.10      | 10,000                              | 0.3      | 0.40                                          | 3,000                                  | 5,000                          | 3,000                         | 3,000 * 0.40 = **\$1,200**                 |
+| 2   | 0.20      | 10,000,000                          | 0.2      | 0.30                                          | 2,000,000                              | 2,500                          | 2,500                         | 2,500 * 0.30 = **\$750**                   |
+| 3   | 0.40      | 1,000,000                           | 0.3      | 0.10                                          | 300,000                                | 1,250                          | 1,250                         | 1,250 * 0.10 = **\$125**                   |
+| 4   | 0.50      | 100,000                             | 0.2      | 0.00                                          | 20,000                                 | 1,000                          | 1,000                         | 1,000 * 0.00 = **\$0**                     |
+| 5   | 0.75      | 10,000                              | 0.3      | -0.25                                         | 3,000                                  | 666.67                         | 666                           | 666 * -0.25 = **-\$166.5**                 |
+| 6   | 1.00      | 1,000                               | 0.6      | -0.50                                         | 600                                    | 500                            | 500                           | 500 * -0.50 = **-\$250**                   |
+| 7   | 2.00      | 100                                 | 0.7      | -1.50                                         | 70                                     | 250                            | 70                            | 70 * -1.50 = **-\$105**                    |
+| 8   | 5.00      | 10                                  | 0.8      | -4.50                                         | 8                                      | 100                            | 8                             | 8 * -4.50 = **-\$36**                      |
+| 9   | 9.00      | 1                                   | 1.0      | -8.50                                         | 1                                      | 55.56                          | 1                             | 1 * -8.50 = **-\$8.5**                     |
