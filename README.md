@@ -90,7 +90,8 @@ Based on the table in the above scenario, estimate the expected win rate for a b
   - **User signals**
   - **Contextual signals**
   - **Bid constraints**
-- **Assumption**: hence, using this type of model for bid_prices selection will predetermine max auction_volume at individual bid_prices, but here selection of bid prices is random. hence, max auction_volume at individual bid_price  is unknown and but can assumed to be capped at total_auction_events.
+- **Assumption**: using this type of model for bid_prices selection will predetermine max auction_volume at individual bid_prices, but here we didnt know why specfic bid_prices were choosen hence assuming more non-learned model selection of bid-prices. hence, max auction_volume at individual bid_price  is unknown and but can assumed to be capped at total_auction_events.
+  * example : Assumption - $0.2 bid auction volume is not capped at 10000000, but we are capping at 11221111.
 
 also since win_rate depends on what bid_price is set and bid_price is related to contextual signal -> this can explain the affect of win_rate to rise then dip then again rises with bid_prices.
   - **Example**:  
@@ -246,3 +247,4 @@ This matches the table value of **$600**, which is the maximum revenue achieved 
 | 7   | A   | 2.00      | 70         | 100            | 0.7      | -1.50         | -262    |
 | 8   | A   | 5.00      | 8          | 10             | 0.8      | -4.50         | -360    |
 | 9   | A   | 9.00      | 1          | 1              | 1.0      | -8.50         | -472    |
+
