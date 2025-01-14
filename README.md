@@ -248,3 +248,36 @@ This matches the table value of **$600**, which is the maximum revenue achieved 
 | 8   | A   | 5.00      | 8          | 10             | 0.8      | -4.50         | -360    |
 | 9   | A   | 9.00      | 1          | 1              | 1.0      | -8.50         | -472    |
 
+---
+
+### 3. Knowing Both Maximum Spend and Maximum Auction Volume at Each Bid Price
+
+- In this scenario, we assume that both **maximum spend** and **maximum auction volume** are known at each bid price.  
+- This allows us to **cap the winnable events** at each bid price based on the lower of the two constraints:  
+  - **Auction Volume Constraint**: `win_events(bid_price) = total_auction(bid_price) * win_rate(bid_price)`  
+  - **Spend Constraint**: `win_events(bid_price) = Spend(bid_price) / bid_price`
+
+#### Winnable Events Formula:
+
+**winnable_events(bid_price) = min(total_auction(bid_price) * win_rate(bid_price), Spend(bid_price) / bid_price)**
+
+#### Revenue Formula:
+
+**revenue(bid_price) = winnable_events(bid_price) * (advertiser_price - bid_price)**
+
+Assume for $0.1 bidprice **max_auction_volume = 10,000 and spend_cap is 500$**
+
+For **\$0.1**, we calculate the winnable events as:
+
+1. **Auction Volume Constraint**:  
+   `win_events(0.1) = total_auction(10,000) * win_rate(0.3) = 3,000`
+
+2. **Spend Constraint**:  
+   `win_events(0.1) = Spend(500) / bid_price(0.1) = 5,000`
+
+The minimum of the two is **3,000**. Using the revenue formula:
+
+**revenue(0.1) = winnable_events(3,000) * (advertiser_price(0.5) - bid_price(0.1))**  
+**revenue(0.1) = 3,000 * (0.5 - 0.1) = 3,000 * 0.4 = \$1,200**
+
+
