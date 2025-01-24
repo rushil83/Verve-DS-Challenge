@@ -152,6 +152,7 @@ We can solve this problem if we know:
 
 2. **Total Revenue at a given bid price**:  
    `Total_Revenue(bid_price) = win_events(bid_price) * Profit(bid_price)`
+    * This eventually leads to concave function, as at lower bidprice win_events(bid_price) will be lower and  Profit(bid_price) will be higher leading to lower Total_Revenue(bid_price), similarly after a certain bid_price as bid_price increase our Total_Revenue(bid_price) will also decrease due to decrement in Profit(bid_price)
 
 3. **Win Events Calculation**:  
    We can calculate `win_events(bid_price)` using two approaches:  
@@ -160,6 +161,8 @@ We can solve this problem if we know:
    - **Approach 2**:  
      `Spend(bid_price) = win_events(bid_price) * bid_price`  
      `win_events(bid_price) = Spend(bid_price) / bid_price`
+
+** we can merge the both condition and create a optimisation + constraint problem to solve as well.
 
 ---
 
